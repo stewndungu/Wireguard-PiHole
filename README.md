@@ -1,10 +1,10 @@
 # Wireguard-PiHole
 
-INTRODUCTION
+##INTRODUCTION
 
 Hello! This project is about having a device ,that is connected to a portable router, route to a home network. With that, the device gains access to a home network DNS (PiHole) to remove ad tracking through DNS
 
-Pre requisite
+##Pre requisite
 
 Hey! So I did this project on a bent & screen busted laptop from a relative. Here were the pre-requisites I did
 
