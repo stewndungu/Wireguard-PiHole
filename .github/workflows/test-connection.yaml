@@ -1,1 +1,14 @@
 name: test-vpn-connection
+on:
+    push:
+        branches:
+            - release
+
+jobs:
+    Wireguard-test:
+        runs-on: ubuntu-24.04
+        steps:
+            name: Start Wireguard container
+            working-directory: /path/tofile/
+            run: docker compose up -d
+        
