@@ -8,7 +8,13 @@ jobs:
     Wireguard-test:
         runs-on: ubuntu-24.04
         steps:
-            name: Start Wireguard container
+            name: Network container
             working-directory: /path/tofile/
             run: docker compose up -d
+
+            name: Test PiHole Container
+
+            name: Test Wireguard Container
+
+            name: Test both containers
         
