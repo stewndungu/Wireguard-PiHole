@@ -4,7 +4,7 @@ on:
     -  main
     
 jobs:
-  Test-Pihole-container:
+  Test-containers:
     uses: ./.github/workflows/test-containers.yaml
 
   
