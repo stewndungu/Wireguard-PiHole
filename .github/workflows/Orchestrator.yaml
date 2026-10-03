@@ -5,7 +5,7 @@ on:
     
 jobs:
   Test-Pihole-container:
-    uses: ./.github/workflows/test-connection.yaml
+    uses: ./.github/workflows/test-containers.yaml
 
   
     
