@@ -1,20 +1,17 @@
-name: test-vpn-connection
 on:
-    push:
-        branches:
-            - release
+    workflow_call: 
 
 jobs:
     Wireguard-test:
         runs-on: ubuntu-24.04
         steps:
-            name: Network container
-            working-directory: /path/tofile/
-            run: docker compose up -d
+        -  name: Network container
+           working-directory: /path/tofile/
+           run: docker compose up -d
 
-            name: Test PiHole Container
+        -  name: Test PiHole Container
 
-            name: Test Wireguard Container
+        -  name: Test Wireguard Container
 
-            name: Test both containers
+        -  name: Test both containers
         
