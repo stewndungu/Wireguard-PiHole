@@ -2,6 +2,8 @@ services:
   wireguard:
     image: lscr.io/linuxserver/wireguard:latest
     container_name: wireguard
+    env_file:
+      - ./wireguard/.env
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -9,8 +11,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Chicago
-      - SERVERURL= #your dns url
-      #spectre-router.duckdns.org
+      - SERVERURL= ${USER_DNS}
       - SERVERPORT=51820
       - PEERS=1
       - PEERDNS=10.2.0.100
