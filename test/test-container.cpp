@@ -27,7 +27,32 @@ void wireguardTest()
 
 void 
 
-int() main
+int main ()
 {
+    try
+        {
+            piholeTest();
+        }
+    catch(const exception& e)
+        {
+            cout << "There is an error: " + e << endl;
+        }
+    catch
+        {
+            cout << "There is an unexpected error"<<endl;
+        }
+
+      try
+        {
+            wireguardTest();
+        }
+    catch(const exception& e)
+        {
+            cout << "There is an error: " + e << endl;
+        }
+    catch
+        {
+            cout << "There is an unexpected error"<<endl;
+        }
 
 }
