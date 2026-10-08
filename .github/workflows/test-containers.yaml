@@ -6,7 +6,7 @@ jobs:
         runs-on: ubuntu-24.04
         steps:
         -  name: Network container
-           working-directory: /path/tofile/
+           working-directory: /Wireguard/container_pihole_vpn
            run: docker compose up -d
 
         -  name: Test PiHole Container
