@@ -1,0 +1,68 @@
+services:
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - SERVERURL= #your dns url
+      #spectre-router.duckdns.org
+      - SERVERPORT=51820
+      - PEERS=1
+      - PEERDNS=10.2.0.100
+      - INTERNAL_SUBNET=10.2.0.0
+    volumes:
+      - ./wireguard/config:/config
+      - /lib/modules:/lib/modules
+    ports:
+      - "51820:51820/udp"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+    networks:
+      pihole_net:
+        ipv4_address: 10.2.0.2
+
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    env_file:
+      - ./pihole/.env
+    environment:
+      - TZ=America/Chicago
+      - WEBPASSWORD=${SECRET_PASSWORD}
+      - FTLCONF_LOCAL_IPV4=10.2.0.100
+      - FTLCONF_dns_upstreams=10.2.0.50#5053
+    volumes:
+      - ./pihole/config:/etc/pihole
+      - ./pihole/dnsmasq:/etc/dnsmasq.d
+      - ./pihole/logs:/var/log/pihole
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8080:80/tcp"
+    restart: unless-stopped
+    networks:
+      pihole_net:
+        ipv4_address: 10.2.0.100
+
+  dnscrypt-proxy:
+    container_name: dnscrypt-proxy
+    image: klutchell/dnscrypt-proxy:latest
+    environment:
+      - LISTEN_ADDRESSES=0.0.0.0:5053
+      - SERVER_NAMES=cloudflare,quad9-doh
+    restart: unless-stopped
+    networks:
+      pihole_net:
+        ipv4_address: 10.2.0.50
+
+networks:
+  pihole_net:
+    ipam:
+      config:
+        - subnet: 10.2.0.0/24
