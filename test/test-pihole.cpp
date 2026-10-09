@@ -12,8 +12,16 @@ int connection_Pihole()
   return result;
 }
 
-void requestsTest()
+string piholeIP()
 {
+  return system("docker exec pihole hostname -i");
+}
+
+int requestsTest(string url)
+{ 
+  // TODO: need to finish the check from result
+  // Idea is it will use dig to send a request and depeding on a response we send a message bacl
+  string result = system();
 }
 
 int main()
@@ -27,18 +35,31 @@ int main()
     return 0;
   }
 
+  // once gauging the ip for pihole
+  string pihole_ip = piholeIP();
 
+  vector<string> good_urls= <"google.com", "github.com">;
+  vector<string> bad_urls= <>;
 
-  // once gauging the ip then send 
-  string pihole_ip = "";
-
-  vector<string> good_urls;
-  vector<string> bad_urls;
-
-  for()
+  //Good tests
+  for(string urls : bad_urls)
     {
-      requestsTest();
+       // TODO: need to finish the check from result
+      requestsTest(url);
     }
+
+  //Bad tests
+
+  for(string url : bad_urls)
+  {
+    // TODO: need to finish the check from result
+    string result = requestsTest(url);
+
+    if(result !=)
+    {
+
+    }
+  }
 
   return 0;
 }
