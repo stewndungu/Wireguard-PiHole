@@ -10,6 +10,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
+      # you can change to whichever timezone you want
       - TZ=America/Chicago
       - SERVERURL= ${USER_DNS}
       - SERVERPORT=51820
@@ -34,6 +35,7 @@ services:
     env_file:
       - ./pihole/.env
     environment:
+    # feel free to change to what ever timezone you want
       - TZ=America/Chicago
       - WEBPASSWORD=${SECRET_PASSWORD}
       - FTLCONF_LOCAL_IPV4=10.2.0.100
@@ -43,8 +45,13 @@ services:
       - ./pihole/dnsmasq:/etc/dnsmasq.d
       - ./pihole/logs:/var/log/pihole
     ports:
-      - "53:53/tcp"
-      - "53:53/udp"
+    # the original are these below. I changed to test in github codespace.
+    # So change it back to the original or change to whatever you design
+    # - "53:53/tcp"
+    # - "53:53/udp"
+    # - "8080:80/tcp"
+      - "5353:53/tcp"
+      - "5353:53/udp"
       - "8080:80/tcp"
     restart: unless-stopped
     networks:
