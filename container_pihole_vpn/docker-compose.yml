@@ -12,11 +12,11 @@ services:
       - PGID=1000
       # you can change to whichever timezone you want
       - TZ=America/Chicago
-      - SERVERURL= ${USER_DNS}
+      - SERVERURL=${USER_DNS}
       - SERVERPORT=51820
       - PEERS=1
       - PEERDNS=10.2.0.100
-      - INTERNAL_SUBNET=10.2.0.0
+      - INTERNAL_SUBNET=10.2.1.0
     volumes:
       - ./wireguard/config:/config
       - /lib/modules:/lib/modules
@@ -37,7 +37,6 @@ services:
     environment:
     # feel free to change to what ever timezone you want
       - TZ=America/Chicago
-      - WEBPASSWORD=${SECRET_PASSWORD}
       - FTLCONF_LOCAL_IPV4=10.2.0.100
       - FTLCONF_dns_upstreams=10.2.0.50#5053
     volumes:
