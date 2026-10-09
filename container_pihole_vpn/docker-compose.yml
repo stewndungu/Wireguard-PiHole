@@ -62,7 +62,10 @@ services:
     container_name: dnscrypt-proxy
     image: klutchell/dnscrypt-proxy:latest
     environment:
-      - LISTEN_ADDRESSES=0.0.0.0:5053
+    # changed the Listen addresses to match the pihole's github change
+    # original is this below.
+    # - LISTEN_ADDRESSES=0.0.0.0:5053
+      - LISTEN_ADDRESSES=0.0.0.0:5353
       - SERVER_NAMES=cloudflare,quad9-doh
     restart: unless-stopped
     networks:
