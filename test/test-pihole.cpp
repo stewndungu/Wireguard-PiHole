@@ -1,11 +1,15 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdlib>
 
 using namespace std;
 
-void connection_Pihole()
+int connection_Pihole()
 {
+  system("cd container_pihole_vpn");
+  int result = system("docker compose up -d pihole");
+  return result;
 }
 
 void requestsTest()
@@ -15,7 +19,15 @@ void requestsTest()
 int main()
 {
   // Checking the connection to the pihole container
-    //docker compose up -d pihole
+  int connection = connection_Pihole();
+  if(connection != 0)
+  {
+    cout<< "Error in standing up the pihole container" << endl;
+    
+    return 0;
+  }
+
+
 
   // once gauging the ip then send 
   string pihole_ip = "";
@@ -27,4 +39,6 @@ int main()
     {
       requestsTest();
     }
+
+  return 0;
 }
