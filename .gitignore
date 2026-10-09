@@ -1,2 +1,4 @@
-/container_pihole_vpn/pihole
+container_pihole_vpn/pihole
 container_pihole_vpn/wireguard
+container_pihole_vpn/pihole/.env
+container_pihole_vpn/wireguard/.env
