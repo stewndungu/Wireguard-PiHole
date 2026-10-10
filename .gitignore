@@ -1,5 +1,8 @@
-container_pihole_vpn/pihole
-container_pihole_vpn/wireguard
+container_pihole_vpn/pihole/config/
+container_pihole_vpn/pihole/dnsmasq/
+container_pihole_vpn/pihole/logs/
+container_pihole_vpn/wireguard/config/
+container_pihole_vpn/wireguard/logs/
 container_pihole_vpn/.env
 container_pihole_vpn/pihole/.env
 container_pihole_vpn/wireguard/.env
