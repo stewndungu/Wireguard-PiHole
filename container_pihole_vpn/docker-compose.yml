@@ -31,8 +31,6 @@ services:
   pihole:
     image: pihole/pihole:latest
     container_name: pihole
-    env_file:
-      - ./pihole/.env
     environment:
     # feel free to change to what ever timezone you want
       - TZ=America/Chicago
