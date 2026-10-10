@@ -37,7 +37,9 @@ services:
     # feel free to change to what ever timezone you want
       - TZ=America/Chicago
       - FTLCONF_LOCAL_IPV4=10.2.0.100
-      - FTLCONF_dns_upstreams=10.2.0.50#5053
+      # change the end bit because of github
+      #original 10.2.0.50#5053
+      - FTLCONF_dns_upstreams=10.2.0.50#5353
     volumes:
       - ./pihole/config:/etc/pihole
       - ./pihole/dnsmasq:/etc/dnsmasq.d
@@ -60,10 +62,7 @@ services:
     container_name: dnscrypt-proxy
     image: klutchell/dnscrypt-proxy:latest
     environment:
-    # changed the Listen addresses to match the pihole's github change
-    # original is this below.
-    # - LISTEN_ADDRESSES=0.0.0.0:5053
-      - LISTEN_ADDRESSES=0.0.0.0:5353
+      - LISTEN_ADDRESSES=0.0.0.0:5053
       - SERVER_NAMES=cloudflare,quad9-doh
     restart: unless-stopped
     networks:
