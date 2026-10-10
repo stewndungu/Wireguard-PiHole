@@ -36,7 +36,7 @@ services:
     environment:
     # feel free to change to what ever timezone you want
       - TZ=America/Chicago
-      - FTLCONF_LOCAL_IPV4=10.2.0.100
+      # - FTLCONF_LOCAL_IPV4=10.2.0.100
       # change the end bit because of github
       #original 10.2.0.50#5053
       - FTLCONF_dns_upstreams=10.2.0.50#5353
