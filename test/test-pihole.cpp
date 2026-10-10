@@ -12,16 +12,21 @@ int connection_Pihole()
   return result;
 }
 
-string piholeIP()
+string retrieveIP(string& cmd)
 {
-  return system("docker exec pihole hostname -i");
+  /*
+    Use the command that is commented out to send. Then use C-style to send the command, grab the string and output it
+     ---> 
+  */
+  //return system("docker exec pihole hostname -i");
 }
 
-int requestsTest(string url)
+string requestsTest(string& pihole_ip, string& url)
 { 
   // TODO: need to finish the check from result
-  // Idea is it will use dig to send a request and depeding on a response we send a message bacl
-  string result = system();
+  // Idea is it will use dig to send a request and depending on a response we send a message bacl
+  string cmd = "dig @" + pihole_ip + " " + url;
+  string result = retrieveIP(cmd);
 }
 
 int main()
@@ -36,7 +41,7 @@ int main()
   }
 
   // once gauging the ip for pihole
-  string pihole_ip = piholeIP();
+  string pihole_ip = retrieveIP();
 
   vector<string> good_urls= <"google.com", "github.com">;
   vector<string> bad_urls= <>;
@@ -45,17 +50,19 @@ int main()
   for(string urls : bad_urls)
     {
        // TODO: need to finish the check from result
-      requestsTest(url);
+      string result = requestsTest(pihole_ip,url);
+
+      if(
+      
     }
 
   //Bad tests
-
   for(string url : bad_urls)
   {
     // TODO: need to finish the check from result
-    string result = requestsTest(url);
+    string result = requestsTest(pihole_ip, url);
 
-    if(result !=)
+    if(result == "0.0.0.0")
     {
 
     }
