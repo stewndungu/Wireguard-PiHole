@@ -6,3 +6,6 @@ container_pihole_vpn/wireguard/logs/
 container_pihole_vpn/.env
 container_pihole_vpn/pihole/.env
 container_pihole_vpn/wireguard/.env
+container_pihole_vpn/duckdns/.env
+container_pihole_vpn/duckdns/config
+container_pihole_vpn/duckdns/logs
