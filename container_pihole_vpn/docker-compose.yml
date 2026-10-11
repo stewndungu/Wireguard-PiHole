@@ -70,6 +70,23 @@ services:
       pihole_net:
         ipv4_address: 10.2.0.50
 
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    env_file:
+      - ./duckdns/.env
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - SUBDOMAINS=spectre-router
+      - UPDATE_IP=ipv4
+      - LOG_FILE=false
+    restart: unless-stopped
+    networks:
+      pihole_net:
+
+
 networks:
   pihole_net:
     ipam:
