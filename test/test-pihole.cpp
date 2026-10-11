@@ -44,7 +44,7 @@ int main()
   string pihole_ip = retrieveIP();
 
   vector<string> good_urls= <"google.com", "github.com">;
-  vector<string> bad_urls= <>;
+  vector<string> bad_urls= <"aws-update.net","12724.xyz">;
 
   //Good tests
   for(string urls : bad_urls)
