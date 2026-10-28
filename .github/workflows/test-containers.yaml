@@ -26,5 +26,6 @@ jobs:
            working-directory: container_pihole_vpn
            run: |
             docker compose down
-            docker compose down --remove-orphans
+            docker compose down --volumes --rmi all --remove-orphans
+            docker system prune -a --volumes --force
         
