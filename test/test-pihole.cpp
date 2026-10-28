@@ -34,7 +34,7 @@ string sendCommand(string& cmd)
   */
   File* pipe = popen(cmd.c_str(), "r");
 
-  char* buffer[128];
+  char buffer[128];
   string result="";
   if(!pipe)
   {
@@ -62,7 +62,7 @@ string requestsTest(string& pihole_ip, string& url)
   // TODO: need to finish the check from result
   // Idea is it will use dig to send a request and depending on a response we send a message bacl
   string cmd = "dig @" + pihole_ip + " " + url;
-  string result = sendCommand(cmd);
+  return sendCommand(cmd);
 }
 
 int main()
@@ -88,8 +88,8 @@ int main()
     return 0;
   }
 
-  vector<string> good_urls= <"google.com", "github.com">;
-  vector<string> bad_urls= <"aws-update.net","12724.xyz">;
+  vector<string> good_urls= {"google.com", "github.com"};
+  vector<string> bad_urls= {"aws-update.net","12724.xyz"};
 
   //Good tests
   for(string& url : good_urls)
@@ -124,7 +124,7 @@ int main()
     if(result == "0.0.0.0")
     {
      
-        cout<< url << " : blocked"
+        cout<< url << " : blocked";
        
     }
     else{
