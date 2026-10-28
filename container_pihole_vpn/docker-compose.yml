@@ -20,7 +20,10 @@ services:
       - ./wireguard/config:/config
       - /lib/modules:/lib/modules
     ports:
-      - "51820:51820/udp"
+    # the original is this below. I changed to test in github codespace.
+    # So change it back to the original or change to whatever you design
+    #  - "51820:51820/udp"
+      - "51821:51820/udp"
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     restart: unless-stopped
