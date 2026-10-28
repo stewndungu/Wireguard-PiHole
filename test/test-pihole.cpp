@@ -5,14 +5,14 @@
 #include <cstdio>
 
 using namespace std;
-
+/*
 int connection_Pihole()
 {
   system("cd container_pihole_vpn");
   int result = system("docker compose up -d pihole");
   return result;
 }
-
+*/
   string sendCommand(string& cmd)
   {
     /*
@@ -64,11 +64,12 @@ string requestsTest(string& pihole_ip, string& url)
 
 int main()
 {
+  /*
   // Checking the connection to the pihole container
   int connection = connection_Pihole();
   if(connection != 0)
   {
-    cout<< "Error in standing up the pihole container" << endl;
+    cout<< "--------- Error in standing up the pihole container -------------" << endl;
     
     return 0;
   }
@@ -76,12 +77,13 @@ int main()
   {
     cout << "--- Pi Hole stood up --------"<< endl;
   }
+  */
 
   // once gauging the ip for pihole
   string pihole_ip = retrieveIP();
   if(pihole_ip == "ERROR")
   {
-    cout<< " -- ERROR in reading OUTPUT  -----" << endl;
+    cout<< " -- ERROR in reading Pi Hole IP  -----" << endl;
     return 0;
   }
 
@@ -96,7 +98,7 @@ int main()
 
       if(result == "ERROR")
       {
-          cout<< " -- ERROR in reading OUTPUT  -----" << endl;
+          cout<< " -- ERROR in reading good URL  -----" << endl;
           return 0;
       }
       
