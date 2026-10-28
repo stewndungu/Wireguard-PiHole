@@ -12,6 +12,38 @@ int connection_Pihole()
   return result;
 }
 
+  string sendCommand(string& cmd)
+  {
+    /*
+      I create a variable pipe that uses popen to generate a separate background
+      It runs the process and reads its stdout
+    */
+    File* pipe = popen(cmd.c_str(), "r");
+
+    char buffer[128];
+    string result="";
+    if(!pipe)
+    {
+      return " -- ERROR in reading OUTPUT  -----"<<endl;
+    }
+
+    /*
+      The stdout in pipe goes into buffer as much as it can
+        until it hits nullptr
+        each time, it takes buffer's stdout into result
+    */
+    while(fgets(buffer,sizeof(buffer),pipe) != nullptr)
+    {
+      result += buffer;
+    }
+
+
+    //close the variable pipe which closes the background process
+    pclose(pipe);
+    return result;
+  }
+
+
 string retrieveIP()
 {
   //get ip address for pihole
@@ -20,42 +52,6 @@ string retrieveIP()
   return sendCommand(command);
 }
 
-string sendCommand(string& cmd)
-{
-  /*
-    Use the command that is commented out to send. Then use C-style to send the command, grab the string and output it
-     ---> 
-  */
-  //return system("docker exec pihole hostname -i");
-
-  /*
-     I create a variable pipe that uses popen to generate a separate background
-     It runs the process and reads its stdout
-  */
-  File* pipe = popen(cmd.c_str(), "r");
-
-  char buffer[128];
-  string result="";
-  if(!pipe)
-  {
-    return " -- ERROR in reading OUTPUT  -----"
-  }
-
-/*
-  The stdout in pipe goes into buffer as much as it can
-    until it hits nullptr
-    each time, it takes buffer's stdout into result
-*/
-  while(fgets(buffer,sizeof(buffer),pipe) != nullptr)
-  {
-    result += buffer;
-  }
-
-
-  //close the variable pipe which closes the background process
-  pclose(pipe);
-  return result;
-}
 
 string requestsTest(string& pihole_ip, string& url)
 { 
