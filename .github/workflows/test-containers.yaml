@@ -3,7 +3,7 @@ on:
 
 defaults:
     run:
-        working-directory: /Wireguard/container_pihole_vpn
+        working-directory: /Wireguard-PiHole/container_pihole_vpn
 jobs:
     Wireguard-test:
         runs-on: ubuntu-24.04
@@ -13,7 +13,7 @@ jobs:
 
         -  name: Test PiHole Container
            run: |
-            g++ -std=c++17 /Wireguard-Pihole/test/test-pihole.cpp -o test-pihole
+            g++ -std=c++17 /Wireguard-PiHole/test/test-pihole.cpp -o test-pihole
             ./test-pihole
 
     #    -  name: Test Wireguard Container
