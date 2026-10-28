@@ -14,8 +14,12 @@ services:
       - TZ=America/Chicago
       - SERVERPORT=51820
       - PEERS=1
-      - PEERDNS=10.2.0.100
-      - INTERNAL_SUBNET=10.2.1.0
+      # Original is this below. I changed to test in github codespace.
+      # So change it back to the original or change to whatever you design
+      #  - PEERDNS=10.2.0.100
+      #  - INTERNAL_SUBNET=10.2.1.0
+      - PEERDNS=172.4.0.100
+      - INTERNAL_SUBNET=172.4.1.0
     volumes:
       - ./wireguard/config:/config
       - /lib/modules:/lib/modules
