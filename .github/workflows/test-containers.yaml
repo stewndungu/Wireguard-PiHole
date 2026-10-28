@@ -12,6 +12,7 @@ jobs:
            run: docker compose up -d
 
         -  name: Test PiHole Container
+           run: test-pihole.cpp
 
         -  name: Test Wireguard Container
 

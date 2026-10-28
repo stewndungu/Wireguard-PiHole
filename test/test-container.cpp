@@ -42,7 +42,7 @@ int main ()
             cout << "There is an unexpected error"<<endl;
         }
 
-      try
+    try
         {
             wireguardTest();
         }
