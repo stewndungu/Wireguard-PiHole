@@ -13,8 +13,7 @@ jobs:
 
         -  name: Test PiHole Container
            run: |
-            g++ -std=c++17 test/test-pihole.cpp -o test-pihole
-            ./test-pihole
+            g++ -std=c++17 test/test-pihole.cpp -o test-pihole ./test-pihole
 
     #    -  name: Test Wireguard Container
 

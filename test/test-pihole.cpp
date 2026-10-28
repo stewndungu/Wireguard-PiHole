@@ -19,13 +19,13 @@ int connection_Pihole()
       I create a variable pipe that uses popen to generate a separate background
       It runs the process and reads its stdout
     */
-    File* pipe = popen(cmd.c_str(), "r");
+    FILE* pipe = popen(cmd.c_str(), "r");
 
     char buffer[128];
     string result="";
     if(!pipe)
     {
-      return " -- ERROR in reading OUTPUT  -----"<<endl;
+      return " -- ERROR in reading OUTPUT  -----" ;
     }
 
     /*
