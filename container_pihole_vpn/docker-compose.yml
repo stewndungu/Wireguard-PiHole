@@ -32,7 +32,7 @@ services:
       # the original is this below. I changed to test in github codespace.
       # So change it back to the original or change to whatever you design
       #  ipv4_address: 10.2.0.2
-        ipv4_address: 70.4.0.2
+        ipv4_address: 172.4.0.25
 
   pihole:
     image: pihole/pihole:latest
@@ -45,7 +45,7 @@ services:
       # - FTLCONF_LOCAL_IPV4=10.2.0.100
       # change the end bit because of github
       #original 10.2.0.50#5053
-      - FTLCONF_dns_upstreams=70.4.0.50#5053
+      - FTLCONF_dns_upstreams=172.4.0.50#5053
       - FTLCONF_dns_listeningMode=ALL
     volumes:
       - ./pihole/config:/etc/pihole
@@ -66,7 +66,7 @@ services:
       # the original is this below. I changed to test in github codespace.
       # So change it back to the original or change to whatever you design
       #  ipv4_address: 10.2.0.100
-        ipv4_address: 70.4.0.100
+        ipv4_address: 172.4.0.100
 
   dnscrypt-proxy:
     container_name: dnscrypt-proxy
@@ -80,7 +80,7 @@ services:
       # the original is this below. I changed to test in github codespace.
       # So change it back to the original or change to whatever you design
       #  ipv4_address: 10.2.0.50
-        ipv4_address: 70.4.0.50
+        ipv4_address: 172.4.0.50
 
   duckdns:
     image: lscr.io/linuxserver/duckdns:latest
@@ -105,5 +105,7 @@ networks:
       config:
       # the original is this below. I changed to test in github codespace.
       # So change it back to the original or change to whatever you design
-      #  ipv4_address: 10.4.0.0/24
-        - subnet: 70.4.0.0/24
+      #  ipv4_address: 10.2.0.0/24
+      # ip_range: 10.2.0.128/25   # automatic IPs only from .128–.255
+        - subnet: 172.4.0.0/24
+          ip_range: 172.4.0.128/25   # automatic IPs only from .128–.255
