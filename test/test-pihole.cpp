@@ -48,7 +48,7 @@ int connection_Pihole()
 string retrieveIP()
 {
   //get ip address for pihole
-  string command = "docker exec pihole hostname -1";
+  string command = "docker exec pihole hostname -i";
 
   return sendCommand(command);
 }
