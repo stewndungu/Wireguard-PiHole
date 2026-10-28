@@ -12,13 +12,49 @@ int connection_Pihole()
   return result;
 }
 
-string retrieveIP(string& cmd)
+string retrieveIP()
+{
+  //get ip address for pihole
+  string command = "docker exec pihole hostname -1";
+
+  return sendCommand(command);
+}
+
+string sendCommand(string& cmd)
 {
   /*
     Use the command that is commented out to send. Then use C-style to send the command, grab the string and output it
      ---> 
   */
   //return system("docker exec pihole hostname -i");
+
+  /*
+     I create a variable pipe that uses popen to generate a separate background
+     It runs the process and reads its stdout
+  */
+  File* pipe = popen(cmd.c_str(), "r");
+
+  char* buffer[128];
+  string result="";
+  if(!pipe)
+  {
+    return " -- ERROR in reading OUTPUT  -----"
+  }
+
+/*
+  The stdout in pipe goes into buffer as much as it can
+    until it hits nullptr
+    each time, it takes buffer's stdout into result
+*/
+  while(fgets(buffer,sizeof(buffer),pipe) != nullptr)
+  {
+    result += buffer;
+  }
+
+
+  //close the variable pipe which closes the background process
+  pclose(pipe);
+  return result;
 }
 
 string requestsTest(string& pihole_ip, string& url)
@@ -26,7 +62,7 @@ string requestsTest(string& pihole_ip, string& url)
   // TODO: need to finish the check from result
   // Idea is it will use dig to send a request and depending on a response we send a message bacl
   string cmd = "dig @" + pihole_ip + " " + url;
-  string result = retrieveIP(cmd);
+  string result = sendCommand(cmd);
 }
 
 int main()
@@ -39,32 +75,61 @@ int main()
     
     return 0;
   }
+  else
+  {
+    cout << "--- Pi Hole stood up --------"<< endl;
+  }
 
   // once gauging the ip for pihole
   string pihole_ip = retrieveIP();
+  if(pihole_ip == "ERROR")
+  {
+    cout<< " -- ERROR in reading OUTPUT  -----" << endl;
+    return 0;
+  }
 
   vector<string> good_urls= <"google.com", "github.com">;
   vector<string> bad_urls= <"aws-update.net","12724.xyz">;
 
   //Good tests
-  for(string urls : bad_urls)
+  for(string& url : good_urls)
     {
        // TODO: need to finish the check from result
       string result = requestsTest(pihole_ip,url);
 
-      if(
+      if(result == "ERROR")
+      {
+          cout<< " -- ERROR in reading OUTPUT  -----" << endl;
+          return 0;
+      }
+      
+      if(result == "0.0.0.0")
+      {
+        cout<< url << " : error -  blocked";
+        return 0;
+      }
+      else{
+        cout<< url << " :  Not blocked";
+        
+      }
       
     }
 
   //Bad tests
-  for(string url : bad_urls)
+  for(string& url : bad_urls)
   {
     // TODO: need to finish the check from result
     string result = requestsTest(pihole_ip, url);
 
     if(result == "0.0.0.0")
     {
-
+     
+        cout<< url << " : blocked"
+       
+    }
+    else{
+        cout << url << " : Not blocked";
+        return 0;
     }
   }
 
