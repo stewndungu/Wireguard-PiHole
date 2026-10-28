@@ -104,11 +104,11 @@ int main()
       
       if(result == "0.0.0.0")
       {
-        cout<< url << " : error -  blocked";
+        cout<< url << " : error -  blocked"<<endl;
         return 0;
       }
       else{
-        cout<< url << " :  Not blocked";
+        cout<< url << " :  Not blocked"<<endl;
         
       }
       
@@ -123,11 +123,11 @@ int main()
     if(result == "0.0.0.0")
     {
      
-        cout<< url << " : blocked";
+        cout<< url << " : blocked"<<endl;
        
     }
     else{
-        cout << url << " : Not blocked";
+        cout << url << " : Not blocked"<<endl;
         return 0;
     }
   }
