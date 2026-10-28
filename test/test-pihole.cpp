@@ -3,6 +3,7 @@
 #include <string>
 #include <cstdlib>
 #include <cstdio>
+#include <cctype>
 
 using namespace std;
 /*
@@ -44,13 +45,26 @@ int connection_Pihole()
     return result;
   }
 
+string trim(string value)
+{
+  const string whitespace = " \t\n\r\f\v";
+  size_t first = value.find_first_not_of(whitespace);
+  if(first == string::npos)
+  {
+    return "";
+  }
+
+  size_t last = value.find_last_not_of(whitespace);
+  return value.substr(first, last - first + 1);
+}
+
 
 string retrieveIP()
 {
   //get ip address for pihole
   string command = "docker exec pihole hostname -i";
 
-  return sendCommand(command);
+  return trim(sendCommand(command));
 }
 
 
@@ -58,8 +72,8 @@ string requestsTest(string& pihole_ip, string& url)
 { 
   // TODO: need to finish the check from result
   // Idea is it will use dig to send a request and depending on a response we send a message bacl
-  string cmd = "dig @" + pihole_ip + " " + url;
-  return sendCommand(cmd);
+  string cmd = "dig +short @" + pihole_ip + " " + url;
+  return trim(sendCommand(cmd));
 }
 
 int main()
@@ -99,13 +113,19 @@ int main()
       if(result == "ERROR")
       {
           cout<< " -- ERROR in reading good URL  -----" << endl;
-          return 0;
+          return 1;
+      }
+
+      if(result.empty())
+      {
+        cout << url << " : DNS lookup returned no answer" << endl;
+        return 1;
       }
       
       if(result == "0.0.0.0")
       {
         cout<< url << " : error -  blocked"<<endl;
-        return 0;
+        return 1;
       }
       else{
         cout<< url << " :  Not blocked"<<endl;
@@ -126,9 +146,14 @@ int main()
         cout<< url << " : blocked"<<endl;
        
     }
+    else if(result.empty())
+    {
+      cout << url << " : DNS lookup returned no answer; cannot confirm it is blocked" << endl;
+      return 1;
+    }
     else{
         cout << url << " : Not blocked"<<endl;
-        return 0;
+      return 1;
     }
   }
 
