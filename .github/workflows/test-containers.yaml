@@ -1,19 +1,21 @@
 on:
     workflow_call: 
 
-defaults:
-    run:
-        working-directory: container_pihole_vpn
+#defaults:
+#    run:
+#        working-directory: container_pihole_vpn
 jobs:
     Wireguard-test:
         runs-on: ubuntu-24.04
         steps:
         -  name: Network container
+           working-directory: Wireguard-PiHole/container_pihole_vpn
            run: docker compose up -d
 
         -  name: Test PiHole Container
+           working-directory: Wireguard-PiHole/test
            run: |
-            g++ -std=c++17 test/test-pihole.cpp -o test-pihole ./test-pihole
+            g++ -std=c++17 test-pihole.cpp -o test-pihole ./test-pihole
 
     #    -  name: Test Wireguard Container
 
