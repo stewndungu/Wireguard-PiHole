@@ -22,6 +22,6 @@ jobs:
     #    -  name: Test both containers
 
         -  name: Tear down the containers   
-              working-directory: container_pihole_vpn
+           working-directory: container_pihole_vpn
            run: docker compose down
         
