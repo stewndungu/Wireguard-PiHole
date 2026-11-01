@@ -14,7 +14,8 @@ int connection_Pihole()
   return result;
 }
 */
-  string sendCommand(string& cmd)
+
+string sendCommand(string& cmd)
   {
     /*
       I create a variable pipe that uses popen to generate a separate background
@@ -93,12 +94,12 @@ int main()
   }
   */
 
-  // once gauging the ip for pihole
+  // Grabbing the ip for pihole
   string pihole_ip = retrieveIP();
   if(pihole_ip == "ERROR")
   {
     cout<< " -- ERROR in reading Pi Hole IP  -----" << endl;
-    return 0;
+    return 1;
   }
 
   vector<string> good_urls= {"google.com", "github.com"};
