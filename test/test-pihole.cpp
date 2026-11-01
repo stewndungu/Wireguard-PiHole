@@ -114,7 +114,6 @@ int main()
       if(result == "ERROR")
       {
           cout<< " ---------- ERROR in reading good URL  -----" << endl;
-          cout<< " ---- It was blocked when it shouldn't have  -----" << endl;
           return 1;
       }
 
