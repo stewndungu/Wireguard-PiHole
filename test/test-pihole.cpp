@@ -74,7 +74,13 @@ string requestsTest(string& pihole_ip, string& url)
   // TODO: need to finish the check from result
   // Idea is it will use dig to send a request and depending on a response we send a message bacl
   string cmd = "dig +short @" + pihole_ip + " " + url;
-  return trim(sendCommand(cmd));
+  string result = trim(sendCommand(cmd));
+  // dig prints ";; ..." to stdout when it can't reach the server
+  if(result.rfind(";;", 0) == 0)
+  {
+    return "ERROR";
+  }
+  return result;
 }
 
 int main()
@@ -142,9 +148,15 @@ int main()
     // TODO: need to finish the check from result
     string result = requestsTest(pihole_ip, url);
 
+    if(result == "ERROR")
+    {
+        cout<< " ---------- ERROR in reading bad URL  -----" << endl;
+        return 1;
+    }
+
     if(result == "0.0.0.0")
     {
-     
+
         cout<< url << " : blocked"<<endl;
        
     }
