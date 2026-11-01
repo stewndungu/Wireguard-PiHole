@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -u
+
+compiler=${CXX:-g++}
+if ! command -v "$compiler" >/dev/null 2>&1; then
+	printf "❌ C++ compiler '%s' was not found. Install g++ or set CXX.\n" "$compiler" >&2
+	exit 1
+fi
+
+mapfile -d '' staged_sources < <(
+	git diff --cached --name-only -z --diff-filter=ACMR -- '*.cpp' '*.cc' '*.cxx'
+)
+
+if ((${#staged_sources[@]} == 0)); then
+	printf '✅ No staged C++ files to check.\n'
+	exit 0
+fi
+
+failed=0
+for source in "${staged_sources[@]}"; do
+	printf 'Checking C++ syntax: %s\n' "$source"
+	if "$compiler" -std=c++17 -fsyntax-only "$source"; then
+		printf '✅ %s compiled without syntax errors.\n' "$source"
+	else
+		printf '❌ %s has a compile or syntax error. Fix the compiler message above.\n' "$source" >&2
+		failed=1
+	fi
+done
+
+exit "$failed"
