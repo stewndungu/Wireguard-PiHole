@@ -113,19 +113,21 @@ int main()
 
       if(result == "ERROR")
       {
-          cout<< " -- ERROR in reading good URL  -----" << endl;
+          cout<< " ---------- ERROR in reading good URL  -----" << endl;
+          cout<< " ---- It was blocked when it shouldn't have  -----" << endl;
           return 1;
       }
 
       if(result.empty())
       {
-        cout << url << " : DNS lookup returned no answer" << endl;
+        cout << "----" + url + " : DNS lookup returned no answer" + "-------" << endl;
         return 1;
       }
       
       if(result == "0.0.0.0")
       {
-        cout<< url << " : error -  blocked"<<endl;
+        cout<< "------- " url + " : error -  blocked ---------"<<endl;
+        cout<< " ---- It was blocked when it shouldn't have  -----" << endl;
         return 1;
       }
       else{
@@ -153,7 +155,8 @@ int main()
       return 1;
     }
     else{
-        cout << url << " : Not blocked"<<endl;
+        cout <<"-------- " url + " : Not blocked ----------"<<endl;
+        cout<< " ---- It wasn't blocked when it should have  -----" << endl;
       return 1;
     }
   }
