@@ -9,7 +9,10 @@ jobs:
 
         -  name: Network container
            working-directory: container_pihole_vpn
-           run: docker compose up -d
+           run: |
+            docker compose up -d
+            # A fresh volume downloads the blocklist before Pi-hole answers DNS
+            timeout 300 bash -c 'until [ "$(docker inspect -f {{.State.Health.Status}} pihole)" = healthy ]; do sleep 5; done'
 
         -  name: Test PiHole Container
            working-directory: test
