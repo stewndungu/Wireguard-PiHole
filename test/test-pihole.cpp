@@ -103,7 +103,7 @@ int main()
   }
 
   vector<string> good_urls= {"google.com", "github.com"};
-  vector<string> bad_urls= {"aws-update.net","12724.xyz"};
+  vector<string> bad_urls= {"dns.0pengl.com","12724.xyz"};
 
   //Good tests
   for(string& url : good_urls)
