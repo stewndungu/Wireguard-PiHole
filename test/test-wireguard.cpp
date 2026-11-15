@@ -58,6 +58,17 @@ string retrieveIP()
   return trim(sendCommand(command));
 }
 
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
+{
+
+}
+
+string dockerPost()
+{
+
+}
+
+
 
 int main()
 {
