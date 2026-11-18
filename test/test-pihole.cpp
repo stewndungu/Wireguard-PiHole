@@ -27,7 +27,7 @@ string sendCommand(string& cmd)
     string result="";
     if(!pipe)
     {
-      return " -- ERROR in reading OUTPUT  -----" ;
+      return "ERROR" ;
     }
 
     /*
@@ -105,7 +105,7 @@ int main()
   if(pihole_ip == "ERROR")
   {
     cout<< " -- ERROR in reading Pi Hole IP  -----" << endl;
-    return 1;
+    return EXIT_FAILURE;
   }
 
   vector<string> good_urls= {"google.com", "github.com"};
@@ -120,20 +120,20 @@ int main()
       if(result == "ERROR")
       {
           cout<< " ---------- ERROR in reading good URL  -----" << endl;
-          return 1;
+          return EXIT_FAILURE;
       }
 
       if(result.empty())
       {
         cout << "----" + url + " : DNS lookup returned no answer" + "-------" << endl;
-        return 1;
+        return EXIT_FAILURE;
       }
       
       if(result == "0.0.0.0")
       {
         cout<< "------- " + url + " : error -  blocked ---------"<<endl;
         cout<< " ---- It was blocked when it shouldn't have  -----" << endl;
-        return 1;
+        return EXIT_FAILURE;
       }
       else{
         cout<< url << " :  Not blocked"<<endl;
@@ -151,7 +151,7 @@ int main()
     if(result == "ERROR")
     {
         cout<< " ---------- ERROR in reading bad URL  -----" << endl;
-        return 1;
+        return EXIT_FAILURE;
     }
 
     if(result == "0.0.0.0")
@@ -163,12 +163,12 @@ int main()
     else if(result.empty())
     {
       cout << url << " : DNS lookup returned no answer; cannot confirm it is blocked" << endl;
-      return 1;
+      return EXIT_FAILURE;
     }
     else{
         cout <<"-------- " + url + " : Not blocked ----------"<<endl;
         cout<< " ---- It wasn't blocked when it should have  -----" << endl;
-      return 1;
+      return EXIT_FAILURE;
     }
   }
 

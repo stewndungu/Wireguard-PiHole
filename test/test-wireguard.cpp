@@ -11,13 +11,13 @@ string sendCommand(string& cmd)
       I create a variable pipe that uses popen to generate a separate background
       It runs the process and reads its stdout
     */
-    FILE* pipe = popen(cmd.c_str(), "r");
+    FILE* pipe { popen(cmd.c_str(), "r") };
 
     char buffer[128];
     string result="";
     if(!pipe)
     {
-      return " -- ERROR in reading OUTPUT  -----" ;
+      return "ERROR" ;
     }
 
     /*
@@ -53,20 +53,34 @@ string trim(string value)
 string retrieveIP()
 {
   //get ip address for pihole
-  string command = "docker exec wireguard hostname -i";
+  string command { "docker exec wireguard hostname -i" };
 
   return trim(sendCommand(command));
 }
+
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
+{
+  return EXIT_SUCCESS;
+}
+
+string dockerPost()
+{
+  return "";
+}
+
 
 
 int main()
 {
 // Grabbing the ip for pihole
-  string wireguard_ip = retrieveIP();
+  string wireguard_ip { retrieveIP() };
   if(wireguard_ip == "ERROR")
   {
     cout<< " ------- ERROR in reading Wireguard IP  -----" << endl;
-    return 1;
+    return EXIT_FAILURE;
   }
+
+
+
 
 }
