@@ -60,12 +60,12 @@ string retrieveIP()
 
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
 {
-
+  return EXIT_SUCCESS;
 }
 
 string dockerPost()
 {
-
+  return "";
 }
 
 
