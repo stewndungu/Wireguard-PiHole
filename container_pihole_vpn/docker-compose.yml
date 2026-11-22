@@ -18,7 +18,7 @@ services:
       # So change it back to the original or change to whatever you design
       #  - PEERDNS=10.2.0.100
       #  - INTERNAL_SUBNET=10.2.1.0
-      - PEERDNS=172.16.0.99
+      - PEERDNS=172.16.0.100
       - INTERNAL_SUBNET=172.16.1.0
     volumes:
       - ./wireguard/config:/config
@@ -95,7 +95,6 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Chicago
-      - SUBDOMAINS=your-subdomain
       - UPDATE_IP=ipv4
       - LOG_FILE=false
     restart: unless-stopped
