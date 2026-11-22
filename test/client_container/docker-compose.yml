@@ -6,6 +6,7 @@ services:
   wg-client:
     image: lscr.io/linuxserver/wireguard:latest
     container_name: wg-client
+    profiles: ["wg-test"]
     cap_add:
       - NET_ADMIN
 
@@ -17,7 +18,7 @@ services:
       - PGID=1000
 
     volumes:
-      - ./wg-client/config:/config 
+      - ../test/client_container/wg-client/config:/config 
     networks:
       client_net:
 
