@@ -18,8 +18,8 @@ services:
       # So change it back to the original or change to whatever you design
       #  - PEERDNS=10.2.0.100
       #  - INTERNAL_SUBNET=10.2.1.0
-      - PEERDNS=172.4.0.100
-      - INTERNAL_SUBNET=172.4.1.0
+      - PEERDNS=172.16.0.100
+      - INTERNAL_SUBNET=172.16.1.0
     volumes:
       - ./wireguard/config:/config
       - /lib/modules:/lib/modules
@@ -36,7 +36,7 @@ services:
       # the original is this below. I changed to test in github codespace.
       # So change it back to the original or change to whatever you design
       #  ipv4_address: 10.2.0.25
-        ipv4_address: 172.4.0.25
+        ipv4_address: 172.16.0.25
 
   pihole:
     image: pihole/pihole:latest
@@ -49,7 +49,7 @@ services:
       # - FTLCONF_LOCAL_IPV4=10.2.0.100
       # change the end bit because of github
       #original 10.2.0.50#5053
-      - FTLCONF_dns_upstreams=172.4.0.50#5053
+      - FTLCONF_dns_upstreams=172.16.0.50#5053
       - FTLCONF_dns_listeningMode=ALL
     volumes:
       - ./pihole/config:/etc/pihole
@@ -70,7 +70,7 @@ services:
       # the original is this below. I changed to test in github codespace.
       # So change it back to the original or change to whatever you design
       #  ipv4_address: 10.2.0.100
-        ipv4_address: 172.4.0.100
+        ipv4_address: 172.16.0.100
 
   dnscrypt-proxy:
     container_name: dnscrypt-proxy
@@ -84,7 +84,7 @@ services:
       # the original is this below. I changed to test in github codespace.
       # So change it back to the original or change to whatever you design
       #  ipv4_address: 10.2.0.50
-        ipv4_address: 172.4.0.50
+        ipv4_address: 172.16.0.50
 
   duckdns:
     image: lscr.io/linuxserver/duckdns:latest
@@ -95,7 +95,6 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Chicago
-      - SUBDOMAINS=your-subdomain
       - UPDATE_IP=ipv4
       - LOG_FILE=false
     restart: unless-stopped
@@ -111,5 +110,5 @@ networks:
       # So change it back to the original or change to whatever you design
       #  ipv4_address: 10.2.0.0/24
       # ip_range: 10.2.0.128/25   # automatic IPs only from .128–.255
-        - subnet: 172.4.0.0/24
-          ip_range: 172.4.0.128/25   # automatic IPs only from .128–.255
+        - subnet: 172.16.0.0/24
+          ip_range: 172.16.0.128/25   # automatic IPs only from .128–.255
