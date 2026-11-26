@@ -52,6 +52,43 @@ string trim(string value)
 }
 
 
+/*
+  nslookup prints a whole block, e.g.
+    Server:   172.18.0.2
+    Address:  172.18.0.2:53
+    Name:     dns.0pengl.com
+    Address:  0.0.0.0
+  The first "Address" is the DNS server itself, so only take the
+  first Address line that comes after "Name:" (the actual answer).
+  Returns "" if there is no answer.
+*/
+string parseNslookup(const string& output)
+{
+  bool seenName = false;
+  size_t start = 0;
+  while(start < output.size())
+  {
+    size_t end = output.find('\n', start);
+    if(end == string::npos) end = output.size();
+    string line = trim(output.substr(start, end - start));
+    start = end + 1;
+
+    if(line.rfind("Name:", 0) == 0)
+    {
+      seenName = true;
+    }
+    else if(seenName && line.rfind("Address", 0) == 0)
+    {
+      size_t colon = line.find(':');
+      if(colon != string::npos)
+      {
+        return trim(line.substr(colon + 1));
+      }
+    }
+  }
+  return "";
+}
+
 string retrieveIP()
 {
   //get ip address for pihole
@@ -114,8 +151,8 @@ int main()
   //checking if good URLs are resolved correctly and bad URLs are blocked
   for(const auto& good : good_urls)
   {
-    string command{"docker exec wg-client nslookup " + good + " " + pihole_ip};
-    string result{ trim(sendCommand(command)) };
+    string command{"docker exec wg-client nslookup -type=A " + good + " " + pihole_ip};
+    string result{ parseNslookup(sendCommand(command)) };
 
     
       if(result == "ERROR")
@@ -144,8 +181,8 @@ int main()
 
   for(const auto& bad : bad_urls)
   {
-    string command{"docker exec wg-client nslookup " + bad + " " + pihole_ip};
-    string result{ trim(sendCommand(command)) };
+    string command{"docker exec wg-client nslookup -type=A " + bad + " " + pihole_ip};
+    string result{ parseNslookup(sendCommand(command)) };
 
     if(result == "ERROR")
     {
