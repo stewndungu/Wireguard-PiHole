@@ -70,10 +70,44 @@ int main()
     return EXIT_FAILURE;
   }
 
+
+  //TODO Listening ports
+  string listeningPortsCommand {"docker exec wireguard wg show wg0"};
+  string listeningPortsCheck { trim(sendCommand(listeningPortsCommand))};
+  if(listeningPortsCheck == "ERROR")
+  {
+    cout<< " ------- ERROR in reading Wireguard Listening Ports  -----" << endl;
+    return EXIT_FAILURE;
+  }
+  else
+  {
+    cout<< "Wireguard Listening Ports: " << listeningPortsCheck << endl;
+  }
+
+  //TODO: Handshake
+  string handshakeCommand {"	docker exec wg-client wg show wg0 latest-handshakes"};
+  string handshakeCheck { trim(sendCommand(handshakeCommand))};
+  if(handshakeCheck == "ERROR")
+  {
+    cout<< " ------- ERROR in reading Wireguard Handshake  -----" << endl;
+    return EXIT_FAILURE;
+  }
+
+  // TODO: check packet Loss
+  string packetCommand {"docker exec wg-client ping -c 3 -W 2 172.16.1.1"};
+  string packetCheck { trim(sendCommand(packetCommand))};
+  if(packetCheck == "ERROR")
+  {
+    cout<< " ------- ERROR in reading Wireguard Packet Loss  -----" << endl;
+    return EXIT_FAILURE;
+  }
+
+
+
   vector<string> good_urls;
   vector<string> bad_urls;
 
-  trim(sendCommand(string{"docker exec wireguard cat /config/peer_test/peer_test.conf"}));
+
 
   //checking if good URLs are resolved correctly and bad URLs are blocked
   for(const auto& good : good_urls)
