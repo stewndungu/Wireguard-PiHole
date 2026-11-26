@@ -58,16 +58,6 @@ string retrieveIP()
   return trim(sendCommand(command));
 }
 
-size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
-{
-  return EXIT_SUCCESS;
-}
-
-string dockerPost()
-{
-  return "";
-}
-
 
 
 int main()
@@ -80,7 +70,72 @@ int main()
     return EXIT_FAILURE;
   }
 
+  vector<string> good_urls;
+  vector<string> bad_urls;
 
+  trim(sendCommand(string{"docker exec wireguard cat /config/peer_test/peer_test.conf"}));
 
+  //checking if good URLs are resolved correctly and bad URLs are blocked
+  for(const auto& good : good_urls)
+  {
+    string command{"docker exec wg-client nslookup" + " " + good + " " + wireguard_ip};
+    string result{ trim(sendCommand(command)) };
+
+    
+      if(result == "ERROR")
+      {
+          cout<< " ---------- ERROR in reading good URL  -----" << endl;
+          return EXIT_FAILURE;
+      }
+
+      if(result.empty())
+      {
+        cout << "----" + good + " : DNS lookup returned no answer" + "-------" << endl;
+        return EXIT_FAILURE;
+      }
+      
+      if(result == "0.0.0.0")
+      {
+        cout<< "------- " + good + " : error -  blocked ---------"<<endl;
+        cout<< " ---- It was blocked when it shouldn't have  -----" << endl;
+        return EXIT_FAILURE;
+      }
+      else{
+        cout<< good << " :  Not blocked"<<endl;
+        
+      }
+  }
+
+  for(const auto& bad : bad_urls)
+  {
+    string command{"docker exec wg-client nslookup" + " " + bad + " " + wireguard_ip};
+    string result{ trim(sendCommand(command)) };
+
+    if(result == "ERROR")
+    {
+        cout<< " ---------- ERROR in reading bad URL  -----" << endl;
+        return EXIT_FAILURE;
+    }
+
+    if(result == "0.0.0.0")
+    {
+
+        cout<< bad << " : blocked"<<endl;
+       
+    }
+    else if(result.empty())
+    {
+      cout << bad << " : DNS lookup returned no answer; cannot confirm it is blocked" << endl;
+      return EXIT_FAILURE;
+    }
+    else{
+        cout <<"-------- " + bad + " : Not blocked ----------"<<endl;
+        cout<< " ---- It wasn't blocked when it should have  -----" << endl;
+      return EXIT_FAILURE;
+    }
+  }
+  
+
+  return EXIT_SUCCESS;
 
 }
