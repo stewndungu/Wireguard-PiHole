@@ -9,4 +9,4 @@ container_pihole_vpn/wireguard/.env
 container_pihole_vpn/duckdns/config
 container_pihole_vpn/duckdns/logs
 test/client_container/wg-client/config/
-test/client_container/wg-server/config
+test/client_container/wg-server/config/
