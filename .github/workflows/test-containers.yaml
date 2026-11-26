@@ -61,7 +61,6 @@ jobs:
 
         -  name: Tear down the containers   
            if: always()
-           working-directory: container_pihole_vpn
            run: |
             docker compose -f container_pihole_vpn/docker-compose.yml \
                            -f test/client_container/docker-compose.yml \
