@@ -1,3 +1,4 @@
+name: CI Test Containers
 on:
     workflow_call: 
 
