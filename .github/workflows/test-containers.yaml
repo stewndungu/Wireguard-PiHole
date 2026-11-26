@@ -1,8 +1,9 @@
+name: CI Test Containers
 on:
     workflow_call: 
 
 jobs:
-    Wireguard-test:
+    Integration-test:
         runs-on: ubuntu-24.04
         steps:
         -  uses: actions/checkout@v4
@@ -20,19 +21,48 @@ jobs:
             g++ -std=c++17 test-pihole.cpp -o test-pihole
             ./test-pihole
 
+        -  name: Setup Wireguard Test-Client
+           run: |
+            #create test folder
+            mkdir -p test/client_container/wg-server/config test/client_container/wg-client/config/wg_confs
+            
+            # Start the network & Test-client network
+            docker compose -f container_pihole_vpn/docker-compose.yml \
+                           -f test/client_container/docker-compose.yml up -d
+
+            timeout 120 bash -c 'until docker exec wireguard test -f /config/peer_test/peer_test.conf; do sleep 2; done'
+
+            #apply the changes to the client configuration
+            docker exec wireguard cat /config/peer_test/peer_test.conf \
+              | sed -e 's/^Endpoint = .*/Endpoint = wireguard:51820/' \
+                    -e 's/^AllowedIPs = .*/AllowedIPs = 0.0.0.0\/0\nPersistentKeepalive = 25/' \
+              > test/client_container/wg-client/config/wg_confs/wg0.conf
+
+            # after wg0.conf is written: naming the service starts it, profile or not
+            docker compose -f container_pihole_vpn/docker-compose.yml \
+                           -f test/client_container/docker-compose.yml up -d wg-client
+                        
+
         -  name: Test Wireguard Container
            working-directory: test
            run: |
             g++ -std=c++17 test-wireguard.cpp -o test-wireguard
             ./test-wireguard
 
-    #    -  name: Test both containers
+        -  name: Tear down Test-Wireguard Container
+           run: |
+            # 1. remove the test stack, including wg-client and client_net
+            docker compose -f container_pihole_vpn/docker-compose.yml \
+                           -f test/client_container/docker-compose.yml \
+                           --profile wg-test down
+            
+            # 2. start the normal stack again
+            docker compose -f container_pihole_vpn/docker-compose.yml up -d
 
         -  name: Tear down the containers   
            if: always()
-           working-directory: container_pihole_vpn
            run: |
-            docker compose down
-            docker compose down --volumes --rmi all --remove-orphans
-            docker system prune -a --volumes --force
+            docker compose -f container_pihole_vpn/docker-compose.yml \
+                           -f test/client_container/docker-compose.yml \
+                           --profile wg-test down --volumes --remove-orphans
         

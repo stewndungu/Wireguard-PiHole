@@ -1,9 +1,9 @@
 services:
   wireguard:
     environment:
-      - PEERDNS=1,test
+      - PEERS=1,test
     volumes:
-    - ../test/client_container/wg-server/config:/config
+      - ../test/client_container/wg-server/config:/config
     networks:
       client_net:
 

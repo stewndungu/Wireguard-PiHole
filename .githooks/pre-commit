@@ -23,7 +23,7 @@ fi
 failed=0
 for source in "${staged_sources[@]}"; do
 	printf 'Checking C++ syntax: %s\n' "$source"
-	if "$compiler" -std=c++17 -fsyntax-only "$source"; then
+	if "$compiler" -std=gnu++17 -fsyntax-only "$source"; then
 		printf '✅ %s compiled without syntax errors.\n' "$source"
 		echo ===========" ✅ Successful the pre-commit Build test"================
 	else
