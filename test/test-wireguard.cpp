@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <string>
 #include <cstdlib>
 #include <cstdio>
@@ -11,6 +12,7 @@ string sendCommand(string& cmd)
       I create a variable pipe that uses popen to generate a separate background
       It runs the process and reads its stdout
     */
+    
     FILE* pipe { popen(cmd.c_str(), "r") };
 
     char buffer[128];
@@ -53,7 +55,7 @@ string trim(string value)
 string retrieveIP()
 {
   //get ip address for pihole
-  string command { "docker exec wireguard hostname -i" };
+  string command { "docker exec pihole hostname -i" };
 
   return trim(sendCommand(command));
 }
@@ -63,10 +65,10 @@ string retrieveIP()
 int main()
 {
 // Grabbing the ip for pihole
-  string wireguard_ip { retrieveIP() };
-  if(wireguard_ip == "ERROR")
+  string pihole_ip { retrieveIP() };
+  if(pihole_ip == "ERROR")
   {
-    cout<< " ------- ERROR in reading Wireguard IP  -----" << endl;
+    cout<< " ------- ERROR in reading Pi-hole IP  -----" << endl;
     return EXIT_FAILURE;
   }
 
@@ -104,15 +106,15 @@ int main()
 
 
 
-  vector<string> good_urls;
-  vector<string> bad_urls;
+  vector<string> good_urls {"google.com", "github.com"};
+  vector<string> bad_urls{"dns.0pengl.com","12724.xyz"};
 
 
 
   //checking if good URLs are resolved correctly and bad URLs are blocked
   for(const auto& good : good_urls)
   {
-    string command{"docker exec wg-client nslookup" + " " + good + " " + wireguard_ip};
+    string command{"docker exec wg-client nslookup " + good + " " + pihole_ip};
     string result{ trim(sendCommand(command)) };
 
     
@@ -142,7 +144,7 @@ int main()
 
   for(const auto& bad : bad_urls)
   {
-    string command{"docker exec wg-client nslookup" + " " + bad + " " + wireguard_ip};
+    string command{"docker exec wg-client nslookup " + bad + " " + pihole_ip};
     string result{ trim(sendCommand(command)) };
 
     if(result == "ERROR")
